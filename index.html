@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Defense - Procedurally Generated</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="ui-overlay">
+            <div id="hud" class="hidden">
+                <div class="hud-top">
+                    <div class="hud-section">
+                        <span class="hud-label">💰 Money:</span>
+                        <span id="money-display" class="hud-value">500</span>
+                    </div>
+                    <div class="hud-section">
+                        <span class="hud-label">❤️ Lives:</span>
+                        <span id="lives-display" class="hud-value">20</span>
+                    </div>
+                    <div class="hud-section">
+                        <span class="hud-label">🌊 Wave:</span>
+                        <span id="wave-display" class="hud-value">0/20</span>
+                    </div>
+                    <div class="hud-section">
+                        <span class="hud-label">⭐ Score:</span>
+                        <span id="score-display" class="hud-value">0</span>
+                    </div>
+                </div>
+                <div class="hud-controls">
+                    <button id="start-wave-btn" class="btn btn-primary">Start Wave</button>
+                    <button id="pause-btn" class="btn">Pause</button>
+                    <div class="speed-controls">
+                        <button id="speed-1x" class="btn btn-speed active" data-speed="1">1x</button>
+                        <button id="speed-2x" class="btn btn-speed" data-speed="2">2x</button>
+                        <button id="speed-4x" class="btn btn-speed" data-speed="4">4x</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tower-panel" class="panel hidden">
+                <h3>Build Tower</h3>
+                <div id="tower-buttons"></div>
+                <div id="tower-info" class="hidden"></div>
+            </div>
+
+            <div id="menu-screen" class="screen">
+                <div class="menu-container">
+                    <h1>🏰 Tower Defense</h1>
+                    <p class="subtitle">Procedurally Generated Levels</p>
+                    <div class="menu-options">
+                        <div class="input-group">
+                            <label for="map-seed">Map Seed (optional):</label>
+                            <input type="text" id="map-seed" placeholder="Leave empty for random">
+                        </div>
+                        <div class="input-group">
+                            <label for="map-size">Map Size:</label>
+                            <select id="map-size">
+                                <option value="small">Small (15x12)</option>
+                                <option value="medium" selected>Medium (20x16)</option>
+                                <option value="large">Large (25x20)</option>
+                            </select>
+                        </div>
+                        <button id="start-game-btn" class="btn btn-large btn-primary">Start Game</button>
+                        <button id="instructions-btn" class="btn btn-large">How to Play</button>
+                        <button id="high-scores-btn" class="btn btn-large">High Scores</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="instructions-screen" class="screen hidden">
+                <div class="menu-container">
+                    <h2>How to Play</h2>
+                    <div class="instructions-content">
+                        <h3>Objective</h3>
+                        <p>Prevent enemies from reaching your base by building towers along the path.</p>
+
+                        <h3>Tower Types</h3>
+                        <ul>
+                            <li><strong>Basic Tower ($100):</strong> Fast fire rate, balanced damage</li>
+                            <li><strong>Sniper Tower ($150):</strong> Long range, high damage, slow fire</li>
+                            <li><strong>Splash Tower ($200):</strong> Area damage, great against groups</li>
+                            <li><strong>Slow Tower ($125):</strong> Slows enemies, moderate damage</li>
+                        </ul>
+
+                        <h3>Enemy Types</h3>
+                        <ul>
+                            <li><strong>Basic:</strong> Normal speed and health</li>
+                            <li><strong>Fast:</strong> Quick but weak</li>
+                            <li><strong>Tank:</strong> Very slow but high health</li>
+                            <li><strong>Flying:</strong> Fast, immune to splash damage</li>
+                            <li><strong>Boss:</strong> Appears every 5 waves - very tough!</li>
+                        </ul>
+
+                        <h3>Controls</h3>
+                        <ul>
+                            <li>Click tower button, then click grid to place</li>
+                            <li>Click existing tower to upgrade or sell</li>
+                            <li>Press SPACE to start next wave</li>
+                            <li>Press ESC to pause</li>
+                            <li>Use speed buttons to control game speed</li>
+                        </ul>
+
+                        <h3>Tips</h3>
+                        <ul>
+                            <li>Upgrade existing towers before building new ones</li>
+                            <li>Use splash towers at corners where enemies bunch up</li>
+                            <li>Slow towers work great with high-damage towers</li>
+                            <li>Save money for boss waves!</li>
+                        </ul>
+                    </div>
+                    <button id="back-to-menu-btn" class="btn btn-large">Back to Menu</button>
+                </div>
+            </div>
+
+            <div id="pause-screen" class="screen hidden">
+                <div class="menu-container">
+                    <h2>Game Paused</h2>
+                    <button id="resume-btn" class="btn btn-large btn-primary">Resume</button>
+                    <button id="save-game-btn" class="btn btn-large">Save Game</button>
+                    <button id="settings-btn" class="btn btn-large">Settings</button>
+                    <button id="quit-btn" class="btn btn-large">Quit to Menu</button>
+                </div>
+            </div>
+
+            <div id="victory-screen" class="screen hidden">
+                <div class="menu-container">
+                    <h2>🎉 Victory!</h2>
+                    <p class="victory-message">You survived all 20 waves!</p>
+                    <div id="victory-stats"></div>
+                    <button id="victory-menu-btn" class="btn btn-large btn-primary">Return to Menu</button>
+                </div>
+            </div>
+
+            <div id="defeat-screen" class="screen hidden">
+                <div class="menu-container">
+                    <h2>💀 Defeat</h2>
+                    <p class="defeat-message">Your base was destroyed!</p>
+                    <div id="defeat-stats"></div>
+                    <button id="retry-btn" class="btn btn-large btn-primary">Try Again</button>
+                    <button id="defeat-menu-btn" class="btn btn-large">Return to Menu</button>
+                </div>
+            </div>
+
+            <div id="loading-screen" class="screen hidden">
+                <div class="menu-container">
+                    <h2>Generating Map...</h2>
+                    <div class="loading-spinner"></div>
+                    <p id="loading-text">Creating procedural level</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core modules -->
+    <script type="module" src="src/utils/Config.js"></script>
+    <script type="module" src="src/utils/Math.js"></script>
+    <script type="module" src="src/utils/Storage.js"></script>
+    <script type="module" src="src/utils/Audio.js"></script>
+
+    <!-- Core systems -->
+    <script type="module" src="src/core/EventBus.js"></script>
+    <script type="module" src="src/core/GameState.js"></script>
+
+    <!-- Map -->
+    <script type="module" src="src/map/Terrain.js"></script>
+    <script type="module" src="src/map/Pathfinder.js"></script>
+    <script type="module" src="src/map/MapGenerator.js"></script>
+
+    <!-- Entities -->
+    <script type="module" src="src/entities/Entity.js"></script>
+    <script type="module" src="src/entities/Projectile.js"></script>
+    <script type="module" src="src/entities/Tower.js"></script>
+    <script type="module" src="src/entities/TowerTypes.js"></script>
+    <script type="module" src="src/entities/Enemy.js"></script>
+    <script type="module" src="src/entities/EnemyTypes.js"></script>
+
+    <!-- Systems -->
+    <script type="module" src="src/systems/WaveManager.js"></script>
+    <script type="module" src="src/systems/EconomySystem.js"></script>
+    <script type="module" src="src/systems/CombatSystem.js"></script>
+    <script type="module" src="src/systems/UpgradeSystem.js"></script>
+
+    <!-- Rendering -->
+    <script type="module" src="src/rendering/ParticleSystem.js"></script>
+    <script type="module" src="src/rendering/AnimationEngine.js"></script>
+    <script type="module" src="src/rendering/Renderer.js"></script>
+
+    <!-- UI -->
+    <script type="module" src="src/ui/UIManager.js"></script>
+    <script type="module" src="src/ui/HUD.js"></script>
+    <script type="module" src="src/ui/Menu.js"></script>
+    <script type="module" src="src/ui/TowerPanel.js"></script>
+
+    <!-- Main game -->
+    <script type="module" src="src/core/Game.js"></script>
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
