@@ -390,8 +390,8 @@ export class AudioSystem {
         const now = ctx.currentTime;
         const beatDuration = 60 / this.currentBPM; // Duration of one beat
 
-        // Schedule 4 bars of music (16 beats)
-        const phraseDuration = beatDuration * 16;
+        // Schedule 16 bars of music (64 beats) for ~21 second loops at 180 BPM
+        const phraseDuration = beatDuration * 64;
 
         // Play drums
         this.playDrumPattern(now, phraseDuration, beatDuration);
@@ -402,8 +402,8 @@ export class AudioSystem {
         // Play rhythm guitar (power chords)
         this.playRhythmGuitar(now, phraseDuration, beatDuration);
 
-        // Play lead guitar riff
-        if (Math.random() < 0.4) {
+        // Play lead guitar riff every other phrase for variety
+        if (Math.random() < 0.5) {
             this.playLeadGuitarRiff(now, phraseDuration, beatDuration);
         }
 

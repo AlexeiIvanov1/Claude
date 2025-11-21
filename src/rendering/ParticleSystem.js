@@ -2,6 +2,27 @@
 
 import { Vector2, randomRange, randomInt } from '../utils/Math.js';
 
+// Helper function to convert hex/rgb colors to rgba
+function colorToRGBA(color, alpha) {
+    // If it's already an rgba or rgb, try to modify it
+    if (color.startsWith('rgba')) {
+        return color.replace(/[\d.]+\)$/g, alpha + ')');
+    }
+    if (color.startsWith('rgb')) {
+        return color.replace('rgb', 'rgba').replace(')', `, ${alpha})`);
+    }
+    // If it's a hex color, convert it
+    if (color.startsWith('#')) {
+        const hex = color.replace('#', '');
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+    // Fallback
+    return `rgba(255, 255, 255, ${alpha})`;
+}
+
 class Particle {
     constructor(x, y, options = {}) {
         this.position = new Vector2(x, y);
@@ -94,7 +115,7 @@ class Particle {
                 // Draw soft smoke with gradient
                 const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size);
                 gradient.addColorStop(0, this.color);
-                gradient.addColorStop(0.5, this.color.replace(')', ', 0.5)').replace('rgb', 'rgba'));
+                gradient.addColorStop(0.5, colorToRGBA(this.color, 0.5));
                 gradient.addColorStop(1, 'transparent');
                 ctx.fillStyle = gradient;
                 ctx.beginPath();
@@ -119,8 +140,8 @@ class Particle {
         // Add glow effect
         if (this.glow) {
             const glowGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size * 2);
-            glowGradient.addColorStop(0, this.glowColor.replace(')', ', 0.8)').replace('rgb', 'rgba'));
-            glowGradient.addColorStop(0.5, this.glowColor.replace(')', ', 0.3)').replace('rgb', 'rgba'));
+            glowGradient.addColorStop(0, colorToRGBA(this.glowColor, 0.8));
+            glowGradient.addColorStop(0.5, colorToRGBA(this.glowColor, 0.3));
             glowGradient.addColorStop(1, 'transparent');
             ctx.fillStyle = glowGradient;
             ctx.beginPath();
