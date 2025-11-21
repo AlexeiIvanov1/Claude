@@ -48,12 +48,20 @@ export class Enemy extends Entity {
     update(deltaTime) {
         if (!this.alive) return;
 
+        // Debug: Log first update
+        if (!this._hasLogged) {
+            console.log(`Enemy ${this.type} spawned at`, this.position, 'target:', this.targetPosition, 'speed:', this.speed);
+            this._hasLogged = true;
+        }
+
         // Update slow effects
         this.updateSlowEffects(deltaTime);
 
         // Move towards target
         if (this.targetPosition) {
             this.moveTowardsTarget(deltaTime);
+        } else {
+            console.log(`Enemy ${this.type} has no target position!`);
         }
     }
 

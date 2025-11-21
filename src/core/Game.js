@@ -330,6 +330,13 @@ export class Game {
 
         this.lastTime = timestamp;
 
+        // Debug: Log loop status occasionally
+        if (!this._loopCount) this._loopCount = 0;
+        this._loopCount++;
+        if (this._loopCount % 60 === 0) {
+            console.log(`Game loop: state=${this.state.current}, deltaTime=${deltaTime.toFixed(2)}ms, enemies=${this.state.enemies.length}`);
+        }
+
         // Update game
         if (this.state.current === GameStates.PLAYING) {
             this.update(adjustedDelta);
