@@ -161,7 +161,8 @@ body {
 
 /* Tower Panel - Terminal Style */
 #tower-panel {
-    position: relative;
+    display: flex;
+    flex-direction: column;
     background: rgba(0, 0, 0, 0.95);
     border: 2px solid #10b981;
     border-left: none;

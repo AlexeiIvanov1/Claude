@@ -217,16 +217,18 @@ export class TowerPanel {
 
     show() {
         if (this.panel) {
+            console.log('TowerPanel.show() called');
             this.panel.classList.remove('hidden');
-            // Explicitly set display to block to ensure visibility
-            this.panel.style.display = 'block';
+            // Clear inline display style to let CSS/flexbox handle it
+            this.panel.style.display = '';
+            console.log('Panel classList:', this.panel.classList.toString());
+            console.log('Panel computed style:', window.getComputedStyle(this.panel).display);
         }
     }
 
     hide() {
         if (this.panel) {
             this.panel.classList.add('hidden');
-            this.panel.style.display = 'none';
         }
     }
 
