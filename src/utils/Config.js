@@ -17,10 +17,10 @@ export const CONFIG = {
 
     TOWERS: {
         BASIC: {
-            name: 'Basic Tower',
-            description: 'Fast fire rate, balanced damage',
+            name: 'MG Turret',
+            description: 'Rapid-fire ballistic weapon',
             cost: 100,
-            color: '#4CAF50',
+            color: '#10b981',
             levels: [
                 {
                     damage: 10,
@@ -46,10 +46,10 @@ export const CONFIG = {
             ]
         },
         SNIPER: {
-            name: 'Sniper Tower',
-            description: 'Long range, high damage, slow fire',
+            name: 'Laser Turret',
+            description: 'High-energy beam weapon, precision targeting',
             cost: 150,
-            color: '#2196F3',
+            color: '#ef4444',
             levels: [
                 {
                     damage: 50,
@@ -75,10 +75,10 @@ export const CONFIG = {
             ]
         },
         SPLASH: {
-            name: 'Splash Tower',
-            description: 'Area damage, great for groups',
+            name: 'Missile Launcher',
+            description: 'Explosive ordnance, devastates groups',
             cost: 200,
-            color: '#FF5722',
+            color: '#f59e0b',
             levels: [
                 {
                     damage: 15,
@@ -107,10 +107,10 @@ export const CONFIG = {
             ]
         },
         SLOW: {
-            name: 'Slow Tower',
-            description: 'Slows enemies, moderate damage',
+            name: 'Cryo Turret',
+            description: 'Freezing projectiles slow targets',
             cost: 125,
-            color: '#9C27B0',
+            color: '#06b6d4',
             levels: [
                 {
                     damage: 5,
@@ -145,44 +145,44 @@ export const CONFIG = {
 
     ENEMIES: {
         BASIC: {
-            name: 'Basic Enemy',
+            name: 'Raider',
             hp: 50,
             speed: 50, // pixels per second
             reward: 10,
-            color: '#FF6B6B',
+            color: '#92400e',
             size: 12
         },
         FAST: {
-            name: 'Fast Enemy',
+            name: 'Feral Ghoul',
             hp: 30,
             speed: 90,
             reward: 15,
-            color: '#4ECDC4',
+            color: '#84cc16',
             size: 10
         },
         TANK: {
-            name: 'Tank',
+            name: 'Super Mutant',
             hp: 200,
             speed: 30,
             reward: 25,
-            color: '#95E1D3',
+            color: '#65a30d',
             size: 16
         },
         FLYING: {
-            name: 'Flying Enemy',
+            name: 'Bloodbug',
             hp: 40,
             speed: 70,
             reward: 20,
-            color: '#F38181',
+            color: '#dc2626',
             size: 11,
             flying: true // immune to splash damage
         },
         BOSS: {
-            name: 'Boss',
+            name: 'Deathclaw',
             hp: 1000,
             speed: 20,
             reward: 100,
-            color: '#AA96DA',
+            color: '#78350f',
             size: 24
         }
     },
@@ -200,18 +200,18 @@ export const CONFIG = {
     },
 
     COLORS: {
-        BACKGROUND: '#1a1a1a',
-        GRID: '#2d2d2d',
-        PATH: '#3d3d3d',
-        START: '#4CAF50',
-        END: '#F44336',
-        VALID_PLACEMENT: 'rgba(76, 175, 80, 0.3)',
-        INVALID_PLACEMENT: 'rgba(244, 67, 54, 0.3)',
-        RANGE_INDICATOR: 'rgba(255, 255, 255, 0.1)',
-        HEALTH_BAR_BG: 'rgba(0, 0, 0, 0.5)',
-        HEALTH_BAR_FG: '#4CAF50',
-        HEALTH_BAR_WARN: '#FFC107',
-        HEALTH_BAR_CRITICAL: '#F44336'
+        BACKGROUND: '#0a0a0a',
+        GRID: '#1a1a1a',
+        PATH: '#374151',
+        START: '#10b981',
+        END: '#dc2626',
+        VALID_PLACEMENT: 'rgba(16, 185, 129, 0.3)',
+        INVALID_PLACEMENT: 'rgba(220, 38, 38, 0.3)',
+        RANGE_INDICATOR: 'rgba(16, 185, 129, 0.15)',
+        HEALTH_BAR_BG: 'rgba(0, 0, 0, 0.7)',
+        HEALTH_BAR_FG: '#10b981',
+        HEALTH_BAR_WARN: '#fbbf24',
+        HEALTH_BAR_CRITICAL: '#dc2626'
     },
 
     UI: {

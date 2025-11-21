@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tower Defense - Procedurally Generated</title>
+    <title>Wasteland Defense - Defend the Commonwealth</title>
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
@@ -13,24 +13,24 @@
             <div id="hud" class="hidden">
                 <div class="hud-top">
                     <div class="hud-section">
-                        <span class="hud-label">💰 Money:</span>
+                        <span class="hud-label">⚙️ Caps:</span>
                         <span id="money-display" class="hud-value">500</span>
                     </div>
                     <div class="hud-section">
-                        <span class="hud-label">❤️ Lives:</span>
+                        <span class="hud-label">🏠 Settlement HP:</span>
                         <span id="lives-display" class="hud-value">20</span>
                     </div>
                     <div class="hud-section">
-                        <span class="hud-label">🌊 Wave:</span>
+                        <span class="hud-label">⚠️ Assault:</span>
                         <span id="wave-display" class="hud-value">0/20</span>
                     </div>
                     <div class="hud-section">
-                        <span class="hud-label">⭐ Score:</span>
+                        <span class="hud-label">☢️ XP:</span>
                         <span id="score-display" class="hud-value">0</span>
                     </div>
                 </div>
                 <div class="hud-controls">
-                    <button id="start-wave-btn" class="btn btn-primary">Start Wave</button>
+                    <button id="start-wave-btn" class="btn btn-primary">Begin Assault</button>
                     <button id="pause-btn" class="btn">Pause</button>
                     <div class="speed-controls">
                         <button id="speed-1x" class="btn btn-speed active" data-speed="1">1x</button>
@@ -41,15 +41,15 @@
             </div>
 
             <div id="tower-panel" class="panel hidden">
-                <h3>Build Tower</h3>
+                <h3>Deploy Turret</h3>
                 <div id="tower-buttons"></div>
                 <div id="tower-info" class="hidden"></div>
             </div>
 
             <div id="menu-screen" class="screen">
                 <div class="menu-container">
-                    <h1>🏰 Tower Defense</h1>
-                    <p class="subtitle">Procedurally Generated Levels</p>
+                    <h1>WASTELAND DEFENSE</h1>
+                    <p class="subtitle">Defend the Commonwealth</p>
                     <div class="menu-options">
                         <div class="input-group">
                             <label for="map-seed">Map Seed (optional):</label>
@@ -75,40 +75,40 @@
                     <h2>How to Play</h2>
                     <div class="instructions-content">
                         <h3>Objective</h3>
-                        <p>Prevent enemies from reaching your base by building towers along the path.</p>
+                        <p>Defend the settlement from wasteland creatures by deploying defensive turrets along their path.</p>
 
-                        <h3>Tower Types</h3>
+                        <h3>Turret Types</h3>
                         <ul>
-                            <li><strong>Basic Tower ($100):</strong> Fast fire rate, balanced damage</li>
-                            <li><strong>Sniper Tower ($150):</strong> Long range, high damage, slow fire</li>
-                            <li><strong>Splash Tower ($200):</strong> Area damage, great against groups</li>
-                            <li><strong>Slow Tower ($125):</strong> Slows enemies, moderate damage</li>
+                            <li><strong>MG Turret (100 Caps):</strong> Rapid-fire ballistic weapon</li>
+                            <li><strong>Laser Turret (150 Caps):</strong> High-energy beam weapon, precision targeting</li>
+                            <li><strong>Missile Launcher (200 Caps):</strong> Explosive ordnance, devastates groups</li>
+                            <li><strong>Cryo Turret (125 Caps):</strong> Freezing projectiles slow targets</li>
                         </ul>
 
-                        <h3>Enemy Types</h3>
+                        <h3>Wasteland Threats</h3>
                         <ul>
-                            <li><strong>Basic:</strong> Normal speed and health</li>
-                            <li><strong>Fast:</strong> Quick but weak</li>
-                            <li><strong>Tank:</strong> Very slow but high health</li>
-                            <li><strong>Flying:</strong> Fast, immune to splash damage</li>
-                            <li><strong>Boss:</strong> Appears every 5 waves - very tough!</li>
+                            <li><strong>Raider:</strong> Basic threat, standard speed and health</li>
+                            <li><strong>Feral Ghoul:</strong> Fast and aggressive but weak</li>
+                            <li><strong>Super Mutant:</strong> Heavily armored, slow but deadly</li>
+                            <li><strong>Bloodbug:</strong> Flying insect, immune to explosives</li>
+                            <li><strong>Deathclaw:</strong> Appears every 5 assaults - extremely dangerous!</li>
                         </ul>
 
                         <h3>Controls</h3>
                         <ul>
-                            <li>Click tower button, then click grid to place</li>
-                            <li>Click existing tower to upgrade or sell</li>
-                            <li>Press SPACE to start next wave</li>
+                            <li>Click turret button, then click grid to deploy</li>
+                            <li>Click existing turret to upgrade or scrap</li>
+                            <li>Press SPACE to begin next assault</li>
                             <li>Press ESC to pause</li>
-                            <li>Use speed buttons to control game speed</li>
+                            <li>Use speed buttons to control V.A.T.S. time flow</li>
                         </ul>
 
                         <h3>Tips</h3>
                         <ul>
-                            <li>Upgrade existing towers before building new ones</li>
-                            <li>Use splash towers at corners where enemies bunch up</li>
-                            <li>Slow towers work great with high-damage towers</li>
-                            <li>Save money for boss waves!</li>
+                            <li>Upgrade existing turrets before deploying new ones</li>
+                            <li>Use missile launchers at corners where enemies cluster</li>
+                            <li>Cryo turrets work great with high-damage weapons</li>
+                            <li>Save caps for Deathclaw assaults!</li>
                         </ul>
                     </div>
                     <button id="back-to-menu-btn" class="btn btn-large">Back to Menu</button>
@@ -127,8 +127,8 @@
 
             <div id="victory-screen" class="screen hidden">
                 <div class="menu-container">
-                    <h2>🎉 Victory!</h2>
-                    <p class="victory-message">You survived all 20 waves!</p>
+                    <h2>MISSION SUCCESS</h2>
+                    <p class="victory-message">The Commonwealth is safe!</p>
                     <div id="victory-stats"></div>
                     <button id="victory-menu-btn" class="btn btn-large btn-primary">Return to Menu</button>
                 </div>
@@ -136,8 +136,8 @@
 
             <div id="defeat-screen" class="screen hidden">
                 <div class="menu-container">
-                    <h2>💀 Defeat</h2>
-                    <p class="defeat-message">Your base was destroyed!</p>
+                    <h2>SETTLEMENT LOST</h2>
+                    <p class="defeat-message">The settlement has fallen!</p>
                     <div id="defeat-stats"></div>
                     <button id="retry-btn" class="btn btn-large btn-primary">Try Again</button>
                     <button id="defeat-menu-btn" class="btn btn-large">Return to Menu</button>
@@ -146,9 +146,9 @@
 
             <div id="loading-screen" class="screen hidden">
                 <div class="menu-container">
-                    <h2>Generating Map...</h2>
+                    <h2>Scanning Commonwealth...</h2>
                     <div class="loading-spinner"></div>
-                    <p id="loading-text">Creating procedural level</p>
+                    <p id="loading-text">Loading Pip-Boy data...</p>
                 </div>
             </div>
         </div>
