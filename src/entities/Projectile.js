@@ -20,6 +20,10 @@ export class Projectile extends Entity {
         this.size = options.size || CONFIG.PROJECTILE.SIZE;
         this.towerType = options.towerType || 'BASIC';
 
+        // Visual properties for realistic rendering
+        this.visualType = this.getVisualType();
+        this.angle = 0; // Rotation angle for projectile
+
         // Calculate direction to target
         this.updateDirection();
 
@@ -41,8 +45,26 @@ export class Projectile extends Entity {
                 (dx / dist) * this.speed,
                 (dy / dist) * this.speed
             );
+            // Calculate angle for rotation
+            this.angle = Math.atan2(dy, dx);
         } else {
             this.velocity = new Vector2(0, 0);
+        }
+    }
+
+    getVisualType() {
+        // Determine projectile visual based on tower type
+        switch (this.towerType) {
+            case 'BASIC':
+                return 'bullet';
+            case 'SNIPER':
+                return 'bullet';
+            case 'SPLASH':
+                return 'rocket';
+            case 'SLOW':
+                return 'laser';
+            default:
+                return 'bullet';
         }
     }
 

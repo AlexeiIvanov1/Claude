@@ -78,6 +78,12 @@ export class Tower extends Entity {
     fire(gameState) {
         if (!this.target) return;
 
+        // Calculate angle to target for muzzle flash
+        const angle = Math.atan2(
+            this.target.position.y - this.position.y,
+            this.target.position.x - this.position.x
+        );
+
         // Create projectile
         const projectileOptions = {
             color: this.color,
@@ -111,8 +117,13 @@ export class Tower extends Entity {
 
         gameState.addProjectile(projectile);
 
-        // Emit fire event
-        eventBus.emit('tower_fired', { tower: this, target: this.target });
+        // Emit fire event with muzzle flash data
+        eventBus.emit('tower_fired', {
+            tower: this,
+            target: this.target,
+            angle: angle,
+            position: { x: this.position.x, y: this.position.y }
+        });
     }
 
     canUpgrade() {

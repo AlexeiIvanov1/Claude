@@ -103,6 +103,15 @@ export class Game {
         eventBus.on(GameEvents.TOWER_UPGRADED, (tower) => {
             this.renderer.emitUpgrade(tower);
         });
+
+        eventBus.on('tower_fired', (data) => {
+            this.renderer.particles.emitMuzzleFlash(
+                data.position.x,
+                data.position.y,
+                data.angle,
+                data.tower.color
+            );
+        });
     }
 
     handleMouseMove(e) {
@@ -202,6 +211,10 @@ export class Game {
 
         // Start game
         this.state.changeState(GameStates.PLAYING);
+
+        // 🎸 START THE METAL! 🎸
+        audioSystem.startMusic();
+
         this.start();
     }
 
@@ -267,12 +280,14 @@ export class Game {
     pauseGame() {
         if (this.state.current === GameStates.PLAYING) {
             this.state.changeState(GameStates.PAUSED);
+            audioSystem.stopMusic();
         }
     }
 
     resumeGame() {
         if (this.state.current === GameStates.PAUSED) {
             this.state.changeState(GameStates.PLAYING);
+            audioSystem.startMusic();
         }
     }
 
@@ -283,6 +298,7 @@ export class Game {
 
     returnToMenu() {
         this.stop();
+        audioSystem.stopMusic();
         this.state.changeState(GameStates.MENU);
         this.state.reset();
     }

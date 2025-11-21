@@ -266,51 +266,157 @@ export class Renderer {
         for (const projectile of this.gameState.projectiles) {
             this.drawProjectile(projectile);
 
-            // Add trail effect
-            if (Math.random() < 0.5) {
+            // Add trail effect based on type
+            const trailChance = projectile.visualType === 'rocket' ? 0.8 : 0.3;
+            if (Math.random() < trailChance) {
                 this.particles.emitProjectileTrail(
                     projectile.position.x,
                     projectile.position.y,
-                    projectile.color
+                    projectile.color,
+                    projectile.visualType
                 );
             }
         }
     }
 
     drawProjectile(projectile) {
+        this.ctx.save();
+        this.ctx.translate(projectile.position.x, projectile.position.y);
+        this.ctx.rotate(projectile.angle);
+
+        switch (projectile.visualType) {
+            case 'bullet':
+                this.drawBullet(projectile);
+                break;
+            case 'rocket':
+                this.drawRocket(projectile);
+                break;
+            case 'laser':
+                this.drawLaser(projectile);
+                break;
+            default:
+                this.drawBullet(projectile);
+        }
+
+        this.ctx.restore();
+    }
+
+    drawBullet(projectile) {
+        const length = projectile.size * 3;
+        const width = projectile.size;
+
+        // Bullet body
         this.ctx.fillStyle = projectile.color;
         this.ctx.beginPath();
-        this.ctx.arc(
-            projectile.position.x,
-            projectile.position.y,
-            projectile.size,
-            0,
-            Math.PI * 2
-        );
+        this.ctx.ellipse(0, 0, length, width, 0, 0, Math.PI * 2);
         this.ctx.fill();
 
-        // Glow effect
-        const gradient = this.ctx.createRadialGradient(
-            projectile.position.x,
-            projectile.position.y,
-            0,
-            projectile.position.x,
-            projectile.position.y,
-            projectile.size * 2
-        );
-        gradient.addColorStop(0, projectile.color);
-        gradient.addColorStop(1, 'transparent');
-
+        // Metallic shine
+        const gradient = this.ctx.createLinearGradient(0, -width, 0, width);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.5)');
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0)');
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
         this.ctx.fillStyle = gradient;
         this.ctx.beginPath();
-        this.ctx.arc(
-            projectile.position.x,
-            projectile.position.y,
-            projectile.size * 2,
-            0,
-            Math.PI * 2
-        );
+        this.ctx.ellipse(0, 0, length, width, 0, 0, Math.PI * 2);
         this.ctx.fill();
+
+        // Glow
+        const glowGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, length * 2);
+        glowGradient.addColorStop(0, projectile.color.replace(')', ', 0.6)').replace('rgb', 'rgba'));
+        glowGradient.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = glowGradient;
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, length * 2, 0, Math.PI * 2);
+        this.ctx.fill();
+    }
+
+    drawRocket(projectile) {
+        const length = projectile.size * 4;
+        const width = projectile.size * 1.5;
+
+        // Rocket body
+        this.ctx.fillStyle = '#888888';
+        this.ctx.fillRect(-length / 2, -width / 2, length, width);
+
+        // Rocket nose cone
+        this.ctx.fillStyle = '#666666';
+        this.ctx.beginPath();
+        this.ctx.moveTo(length / 2, 0);
+        this.ctx.lineTo(length / 2 - width, -width / 2);
+        this.ctx.lineTo(length / 2 - width, width / 2);
+        this.ctx.closePath();
+        this.ctx.fill();
+
+        // Fins
+        this.ctx.fillStyle = '#555555';
+        this.ctx.beginPath();
+        this.ctx.moveTo(-length / 2, -width / 2);
+        this.ctx.lineTo(-length / 2 - width / 2, -width);
+        this.ctx.lineTo(-length / 2, 0);
+        this.ctx.closePath();
+        this.ctx.fill();
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(-length / 2, width / 2);
+        this.ctx.lineTo(-length / 2 - width / 2, width);
+        this.ctx.lineTo(-length / 2, 0);
+        this.ctx.closePath();
+        this.ctx.fill();
+
+        // Exhaust flame
+        const flameGradient = this.ctx.createRadialGradient(-length / 2, 0, 0, -length / 2 - width, 0, width * 2);
+        flameGradient.addColorStop(0, '#FFFFFF');
+        flameGradient.addColorStop(0.3, '#FFFF00');
+        flameGradient.addColorStop(0.6, '#FF6600');
+        flameGradient.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = flameGradient;
+        this.ctx.beginPath();
+        this.ctx.arc(-length / 2, 0, width * 2, 0, Math.PI * 2);
+        this.ctx.fill();
+
+        // Metallic highlight
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        this.ctx.fillRect(-length / 4, -width / 2, length / 3, width / 4);
+    }
+
+    drawLaser(projectile) {
+        const length = projectile.size * 5;
+        const width = projectile.size;
+
+        // Core beam
+        this.ctx.strokeStyle = projectile.color;
+        this.ctx.lineWidth = width;
+        this.ctx.lineCap = 'round';
+        this.ctx.beginPath();
+        this.ctx.moveTo(-length / 2, 0);
+        this.ctx.lineTo(length / 2, 0);
+        this.ctx.stroke();
+
+        // Inner bright core
+        this.ctx.strokeStyle = '#FFFFFF';
+        this.ctx.lineWidth = width / 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(-length / 2, 0);
+        this.ctx.lineTo(length / 2, 0);
+        this.ctx.stroke();
+
+        // Outer glow
+        const glowGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, width * 3);
+        glowGradient.addColorStop(0, projectile.color.replace(')', ', 0.8)').replace('rgb', 'rgba'));
+        glowGradient.addColorStop(0.5, projectile.color.replace(')', ', 0.4)').replace('rgb', 'rgba'));
+        glowGradient.addColorStop(1, 'transparent');
+        this.ctx.fillStyle = glowGradient;
+        this.ctx.fillRect(-length / 2, -width * 3, length, width * 6);
+
+        // Energy particles along beam
+        for (let i = 0; i < 5; i++) {
+            const x = (Math.random() - 0.5) * length;
+            this.ctx.fillStyle = '#FFFFFF';
+            this.ctx.beginPath();
+            this.ctx.arc(x, 0, width / 3, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
     }
 
     drawRangeIndicators() {
