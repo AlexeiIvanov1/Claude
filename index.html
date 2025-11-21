@@ -8,45 +8,40 @@
 </head>
 <body>
     <div id="game-container">
-        <canvas id="game-canvas"></canvas>
-        <div id="ui-overlay">
-            <div id="hud" class="hidden">
-                <div class="hud-top">
-                    <div class="hud-section">
-                        <span class="hud-label">⚙️ Caps:</span>
-                        <span id="money-display" class="hud-value">500</span>
+        <div style="position: relative;">
+            <canvas id="game-canvas"></canvas>
+            <div id="ui-overlay">
+                <div id="hud" class="hidden">
+                    <div class="hud-top">
+                        <div class="hud-section">
+                            <span class="hud-label">⚙️ Caps:</span>
+                            <span id="money-display" class="hud-value">500</span>
+                        </div>
+                        <div class="hud-section">
+                            <span class="hud-label">🏠 Settlement HP:</span>
+                            <span id="lives-display" class="hud-value">20</span>
+                        </div>
+                        <div class="hud-section">
+                            <span class="hud-label">⚠️ Assault:</span>
+                            <span id="wave-display" class="hud-value">0/20</span>
+                        </div>
+                        <div class="hud-section">
+                            <span class="hud-label">☢️ XP:</span>
+                            <span id="score-display" class="hud-value">0</span>
+                        </div>
                     </div>
-                    <div class="hud-section">
-                        <span class="hud-label">🏠 Settlement HP:</span>
-                        <span id="lives-display" class="hud-value">20</span>
-                    </div>
-                    <div class="hud-section">
-                        <span class="hud-label">⚠️ Assault:</span>
-                        <span id="wave-display" class="hud-value">0/20</span>
-                    </div>
-                    <div class="hud-section">
-                        <span class="hud-label">☢️ XP:</span>
-                        <span id="score-display" class="hud-value">0</span>
+                    <div class="hud-controls">
+                        <button id="start-wave-btn" class="btn btn-primary">Begin Assault</button>
+                        <button id="pause-btn" class="btn">Pause</button>
+                        <div class="speed-controls">
+                            <button id="speed-1x" class="btn btn-speed active" data-speed="1">1x</button>
+                            <button id="speed-2x" class="btn btn-speed" data-speed="2">2x</button>
+                            <button id="speed-4x" class="btn btn-speed" data-speed="4">4x</button>
+                        </div>
                     </div>
                 </div>
-                <div class="hud-controls">
-                    <button id="start-wave-btn" class="btn btn-primary">Begin Assault</button>
-                    <button id="pause-btn" class="btn">Pause</button>
-                    <div class="speed-controls">
-                        <button id="speed-1x" class="btn btn-speed active" data-speed="1">1x</button>
-                        <button id="speed-2x" class="btn btn-speed" data-speed="2">2x</button>
-                        <button id="speed-4x" class="btn btn-speed" data-speed="4">4x</button>
-                    </div>
-                </div>
-            </div>
 
-            <div id="tower-panel" class="panel hidden">
-                <h3>Deploy Turret</h3>
-                <div id="tower-buttons"></div>
-                <div id="tower-info" class="hidden"></div>
-            </div>
-
-            <div id="menu-screen" class="screen">
+                <div id="menu-screen" class="screen">
                 <div class="menu-container">
                     <h1>WASTELAND DEFENSE</h1>
                     <p class="subtitle">Defend the Commonwealth</p>
@@ -151,6 +146,12 @@
                     <p id="loading-text">Loading Pip-Boy data...</p>
                 </div>
             </div>
+        </div>
+
+        <div id="tower-panel" class="panel hidden">
+            <h3>Deploy Turret</h3>
+            <div id="tower-buttons"></div>
+            <div id="tower-info" class="hidden"></div>
         </div>
     </div>
 

@@ -22,15 +22,16 @@ body {
 
 #game-container {
     position: relative;
-    width: 800px;
+    width: 1050px;
     height: 640px;
     box-shadow:
         0 0 50px rgba(16, 185, 129, 0.3),
         inset 0 0 100px rgba(0, 0, 0, 0.5);
     border: 3px solid #10b981;
     border-radius: 0;
-    overflow: hidden;
+    overflow: visible;
     background: #000;
+    display: flex;
 }
 
 /* CRT Screen Effect */
@@ -41,6 +42,7 @@ body {
     background: #0a0a0a;
     image-rendering: pixelated;
     filter: contrast(1.1) brightness(0.95);
+    flex-shrink: 0;
 }
 
 /* Scan lines overlay */
@@ -66,13 +68,17 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 800px;
     height: 100%;
     pointer-events: none;
 }
 
 #ui-overlay > * {
     pointer-events: auto;
+}
+
+#ui-overlay-container {
+    display: contents;
 }
 
 /* HUD Styles - Pip-Boy Terminal */
@@ -146,19 +152,19 @@ body {
 
 /* Tower Panel - Terminal Style */
 #tower-panel {
-    position: absolute;
-    right: 10px;
-    top: 120px;
+    position: relative;
     background: rgba(0, 0, 0, 0.95);
     border: 2px solid #10b981;
+    border-left: none;
     padding: 15px;
     color: #10b981;
-    min-width: 220px;
-    max-width: 270px;
+    width: 250px;
+    flex-shrink: 0;
     box-shadow:
         0 0 30px rgba(16, 185, 129, 0.4),
         inset 0 0 20px rgba(16, 185, 129, 0.1);
     text-shadow: 0 0 5px #10b981;
+    overflow-y: auto;
 }
 
 #tower-panel h3 {
