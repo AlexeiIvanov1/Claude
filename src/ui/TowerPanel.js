@@ -218,12 +218,15 @@ export class TowerPanel {
     show() {
         if (this.panel) {
             this.panel.classList.remove('hidden');
+            // Explicitly set display to block to ensure visibility
+            this.panel.style.display = 'block';
         }
     }
 
     hide() {
         if (this.panel) {
             this.panel.classList.add('hidden');
+            this.panel.style.display = 'none';
         }
     }
 
