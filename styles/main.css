@@ -4,26 +4,58 @@
     box-sizing: border-box;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    background: #0a0a0a;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     overflow: hidden;
+    color: #10b981;
 }
 
 #game-container {
     position: relative;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
+    box-shadow:
+        0 0 50px rgba(16, 185, 129, 0.3),
+        inset 0 0 100px rgba(0, 0, 0, 0.5);
+    border: 3px solid #10b981;
+    border-radius: 0;
     overflow: hidden;
+    background: #000;
 }
 
+/* CRT Screen Effect */
 #game-canvas {
     display: block;
-    background: #2d2d2d;
+    background: #0a0a0a;
+    image-rendering: pixelated;
+    filter: contrast(1.1) brightness(0.95);
+}
+
+/* Scan lines overlay */
+#game-canvas::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 1000;
 }
 
 #ui-overlay {
@@ -39,15 +71,18 @@ body {
     pointer-events: auto;
 }
 
-/* HUD Styles */
+/* HUD Styles - Pip-Boy Terminal */
 #hud {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 100%);
     padding: 12px 20px;
-    color: white;
+    color: #10b981;
+    border-bottom: 2px solid #10b981;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    text-shadow: 0 0 5px #10b981;
 }
 
 .hud-top {
@@ -61,18 +96,36 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 5px 10px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid #10b981;
+    position: relative;
+}
+
+.hud-section::before {
+    content: '>';
+    position: absolute;
+    left: 2px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
 }
 
 .hud-label {
     font-weight: 600;
-    font-size: 14px;
-    opacity: 0.9;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .hud-value {
     font-size: 18px;
     font-weight: bold;
-    color: #4CAF50;
+    color: #14f195;
+    text-shadow: 0 0 10px #10b981;
 }
 
 .hud-controls {
@@ -87,24 +140,31 @@ body {
     gap: 4px;
 }
 
-/* Tower Panel */
+/* Tower Panel - Terminal Style */
 #tower-panel {
     position: absolute;
     right: 10px;
     top: 120px;
-    background: rgba(30, 30, 30, 0.95);
-    border: 2px solid #4CAF50;
-    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #10b981;
     padding: 15px;
-    color: white;
-    min-width: 200px;
-    max-width: 250px;
+    color: #10b981;
+    min-width: 220px;
+    max-width: 270px;
+    box-shadow:
+        0 0 30px rgba(16, 185, 129, 0.4),
+        inset 0 0 20px rgba(16, 185, 129, 0.1);
+    text-shadow: 0 0 5px #10b981;
 }
 
 #tower-panel h3 {
     margin-bottom: 12px;
-    color: #4CAF50;
+    color: #14f195;
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #10b981;
+    padding-bottom: 8px;
 }
 
 #tower-buttons {
@@ -114,30 +174,63 @@ body {
 }
 
 .tower-btn {
-    background: rgba(76, 175, 80, 0.2);
-    border: 2px solid #4CAF50;
-    color: white;
+    background: rgba(16, 185, 129, 0.15);
+    border: 2px solid #10b981;
+    color: #10b981;
     padding: 10px;
-    border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s;
-    font-size: 13px;
+    font-size: 12px;
     text-align: left;
+    font-family: 'Share Tech Mono', monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.tower-btn::before {
+    content: '[  ]';
+    position: absolute;
+    left: 5px;
+}
+
+.tower-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.tower-btn:hover::after {
+    left: 100%;
 }
 
 .tower-btn:hover {
-    background: rgba(76, 175, 80, 0.4);
-    transform: translateY(-2px);
+    background: rgba(16, 185, 129, 0.3);
+    box-shadow:
+        0 0 20px rgba(16, 185, 129, 0.5),
+        inset 0 0 10px rgba(16, 185, 129, 0.2);
+    transform: translateX(-3px);
 }
 
 .tower-btn.selected {
-    background: rgba(76, 175, 80, 0.6);
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+    background: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.7);
+    border-color: #14f195;
+}
+
+.tower-btn.selected::before {
+    content: '[XX]';
+    animation: blink 0.5s infinite;
 }
 
 .tower-btn.disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
+    border-color: #065f46;
 }
 
 .tower-btn-header {
@@ -145,46 +238,67 @@ body {
     justify-content: space-between;
     font-weight: bold;
     margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .tower-btn-cost {
-    color: #FFD700;
+    color: #fbbf24;
+    text-shadow: 0 0 5px #fbbf24;
 }
 
 .tower-btn-description {
-    font-size: 11px;
+    font-size: 10px;
     opacity: 0.8;
+    margin-left: 20px;
 }
 
 #tower-info {
     margin-top: 15px;
     padding-top: 15px;
-    border-top: 1px solid #4CAF50;
+    border-top: 1px solid #10b981;
 }
 
 .tower-stat {
     display: flex;
     justify-content: space-between;
     margin: 5px 0;
-    font-size: 12px;
+    font-size: 11px;
 }
 
-/* Buttons */
+/* Buttons - Terminal Style */
 .btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    color: white;
+    background: rgba(16, 185, 129, 0.2);
+    border: 2px solid #10b981;
+    color: #10b981;
     padding: 8px 16px;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     transition: all 0.2s;
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    text-shadow: 0 0 5px #10b981;
+}
+
+.btn::before {
+    content: '>';
+    position: absolute;
+    left: 5px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.btn:hover::before {
+    opacity: 1;
+    animation: blink 0.5s infinite;
 }
 
 .btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
     transform: translateY(-2px);
 }
 
@@ -193,38 +307,40 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-    border-color: #4CAF50;
+    background: rgba(16, 185, 129, 0.4);
+    border-color: #14f195;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    background: rgba(16, 185, 129, 0.6);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.8);
 }
 
 .btn-large {
     padding: 12px 30px;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .btn-speed {
     padding: 6px 12px;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .btn-speed.active {
-    background: rgba(76, 175, 80, 0.5);
-    border-color: #4CAF50;
+    background: rgba(16, 185, 129, 0.5);
+    border-color: #14f195;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
 }
 
-/* Screens */
+/* Screens - Terminal Interface */
 .screen {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.95);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -236,38 +352,73 @@ body {
 }
 
 .menu-container {
-    background: rgba(30, 30, 30, 0.95);
-    border: 3px solid #4CAF50;
-    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.98);
+    border: 3px solid #10b981;
     padding: 40px;
-    max-width: 600px;
+    max-width: 700px;
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    color: white;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8);
+    color: #10b981;
+    box-shadow:
+        0 0 50px rgba(16, 185, 129, 0.5),
+        inset 0 0 30px rgba(16, 185, 129, 0.1);
+    position: relative;
+    text-shadow: 0 0 5px #10b981;
+}
+
+/* CRT effect for menu */
+.menu-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(16, 185, 129, 0.03),
+        rgba(16, 185, 129, 0.03) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.menu-container > * {
+    position: relative;
+    z-index: 2;
 }
 
 .menu-container h1 {
-    font-size: 48px;
+    font-size: 42px;
     text-align: center;
     margin-bottom: 10px;
-    color: #4CAF50;
-    text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+    color: #14f195;
+    text-shadow:
+        0 0 20px #10b981,
+        0 0 40px #10b981;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
 
 .menu-container h2 {
-    font-size: 36px;
+    font-size: 32px;
     text-align: center;
     margin-bottom: 20px;
-    color: #4CAF50;
+    color: #14f195;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .subtitle {
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     opacity: 0.8;
     margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .menu-options {
@@ -284,33 +435,48 @@ body {
 
 .input-group label {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .input-group input,
 .input-group select {
     padding: 10px;
-    border: 2px solid #4CAF50;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+    border: 2px solid #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
     font-size: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    box-shadow:
+        inset 0 0 10px rgba(16, 185, 129, 0.3),
+        0 0 15px rgba(16, 185, 129, 0.5);
 }
 
 .input-group input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(16, 185, 129, 0.5);
 }
 
 /* Instructions */
 .instructions-content {
     text-align: left;
-    line-height: 1.6;
+    line-height: 1.8;
 }
 
 .instructions-content h3 {
-    color: #4CAF50;
+    color: #14f195;
     margin-top: 20px;
     margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #10b981;
+    padding-bottom: 5px;
 }
 
 .instructions-content ul {
@@ -322,6 +488,11 @@ body {
     margin: 8px 0;
 }
 
+.instructions-content li::marker {
+    content: '> ';
+    color: #14f195;
+}
+
 /* Victory/Defeat Screens */
 .victory-message,
 .defeat-message {
@@ -329,12 +500,14 @@ body {
     font-size: 18px;
     margin-bottom: 25px;
     opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 #victory-stats,
 #defeat-stats {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 2px solid #10b981;
     padding: 20px;
     margin-bottom: 25px;
 }
@@ -343,16 +516,22 @@ body {
     display: flex;
     justify-content: space-between;
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .stat-label {
     opacity: 0.8;
+    text-transform: uppercase;
+}
+
+.stat-label::before {
+    content: '> ';
 }
 
 .stat-value {
     font-weight: bold;
-    color: #4CAF50;
+    color: #14f195;
+    text-shadow: 0 0 10px #10b981;
 }
 
 /* Loading Screen */
@@ -360,10 +539,11 @@ body {
     width: 60px;
     height: 60px;
     margin: 30px auto;
-    border: 6px solid rgba(76, 175, 80, 0.2);
-    border-top-color: #4CAF50;
+    border: 6px solid rgba(16, 185, 129, 0.2);
+    border-top-color: #10b981;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
 }
 
 @keyframes spin {
@@ -376,6 +556,8 @@ body {
     text-align: center;
     font-size: 16px;
     opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 /* Panel base class */
@@ -383,12 +565,33 @@ body {
     pointer-events: auto;
 }
 
+/* Warning/Radiation effect */
+@keyframes radiation-pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
+    }
+}
+
+/* Nuclear warning stripes */
+.nuclear-warning {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(16, 185, 129, 0.1),
+        rgba(16, 185, 129, 0.1) 10px,
+        rgba(251, 191, 36, 0.1) 10px,
+        rgba(251, 191, 36, 0.1) 20px
+    );
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     #tower-panel {
         right: 5px;
         top: 110px;
-        min-width: 180px;
+        min-width: 200px;
         padding: 12px;
     }
 
@@ -397,21 +600,32 @@ body {
     }
 }
 
-/* Scrollbar styling */
+/* Scrollbar styling - Terminal theme */
 .menu-container::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 .menu-container::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #10b981;
 }
 
 .menu-container::-webkit-scrollbar-thumb {
-    background: #4CAF50;
-    border-radius: 4px;
+    background: #10b981;
+    box-shadow: 0 0 10px #10b981;
 }
 
 .menu-container::-webkit-scrollbar-thumb:hover {
-    background: #45a049;
+    background: #14f195;
+}
+
+/* Vault-Tec Logo Effect */
+.menu-container h1::before {
+    content: '☢ ';
+    animation: radiation-pulse 2s infinite;
+}
+
+.menu-container h1::after {
+    content: ' ☢';
+    animation: radiation-pulse 2s infinite;
 }
