@@ -129,19 +129,19 @@ export class UIManager {
         if (statsDiv) {
             statsDiv.innerHTML = `
                 <div class="stat-row">
-                    <span class="stat-label">Final Score:</span>
+                    <span class="stat-label">Total XP:</span>
                     <span class="stat-value">${this.gameState.score}</span>
                 </div>
                 <div class="stat-row">
-                    <span class="stat-label">Waves Completed:</span>
+                    <span class="stat-label">Assaults Repelled:</span>
                     <span class="stat-value">${this.gameState.wave}</span>
                 </div>
                 <div class="stat-row">
-                    <span class="stat-label">Lives Remaining:</span>
+                    <span class="stat-label">Settlement HP:</span>
                     <span class="stat-value">${this.gameState.lives}</span>
                 </div>
                 <div class="stat-row">
-                    <span class="stat-label">Map Seed:</span>
+                    <span class="stat-label">Location Seed:</span>
                     <span class="stat-value">${this.gameState.mapSeed}</span>
                 </div>
             `;
@@ -155,15 +155,15 @@ export class UIManager {
         if (statsDiv) {
             statsDiv.innerHTML = `
                 <div class="stat-row">
-                    <span class="stat-label">Final Score:</span>
+                    <span class="stat-label">Total XP:</span>
                     <span class="stat-value">${this.gameState.score}</span>
                 </div>
                 <div class="stat-row">
-                    <span class="stat-label">Waves Survived:</span>
+                    <span class="stat-label">Assaults Survived:</span>
                     <span class="stat-value">${this.gameState.wave}</span>
                 </div>
                 <div class="stat-row">
-                    <span class="stat-label">Map Seed:</span>
+                    <span class="stat-label">Location Seed:</span>
                     <span class="stat-value">${this.gameState.mapSeed}</span>
                 </div>
             `;

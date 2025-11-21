@@ -22,6 +22,8 @@ body {
 
 #game-container {
     position: relative;
+    width: 800px;
+    height: 640px;
     box-shadow:
         0 0 50px rgba(16, 185, 129, 0.3),
         inset 0 0 100px rgba(0, 0, 0, 0.5);
@@ -34,6 +36,8 @@ body {
 /* CRT Screen Effect */
 #game-canvas {
     display: block;
+    width: 800px;
+    height: 640px;
     background: #0a0a0a;
     image-rendering: pixelated;
     filter: contrast(1.1) brightness(0.95);

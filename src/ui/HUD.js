@@ -84,13 +84,13 @@ export class HUD {
         if (this.livesDisplay) {
             this.livesDisplay.textContent = lives;
 
-            // Change color based on lives
+            // Change color based on lives (Fallout theme)
             if (lives <= 5) {
-                this.livesDisplay.style.color = '#F44336';
+                this.livesDisplay.style.color = '#dc2626'; // Critical red
             } else if (lives <= 10) {
-                this.livesDisplay.style.color = '#FFC107';
+                this.livesDisplay.style.color = '#fbbf24'; // Warning yellow
             } else {
-                this.livesDisplay.style.color = '#4CAF50';
+                this.livesDisplay.style.color = '#10b981'; // Pip-Boy green
             }
         }
     }
@@ -111,10 +111,10 @@ export class HUD {
         if (this.startWaveBtn) {
             if (waveInProgress) {
                 this.startWaveBtn.disabled = true;
-                this.startWaveBtn.textContent = 'Wave in Progress...';
+                this.startWaveBtn.textContent = 'Assault in Progress...';
             } else {
                 this.startWaveBtn.disabled = false;
-                this.startWaveBtn.textContent = 'Start Wave';
+                this.startWaveBtn.textContent = 'Begin Assault';
             }
         }
     }
