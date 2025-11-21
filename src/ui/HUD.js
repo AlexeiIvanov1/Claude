@@ -112,9 +112,11 @@ export class HUD {
             if (waveInProgress) {
                 this.startWaveBtn.disabled = true;
                 this.startWaveBtn.textContent = 'Assault in Progress...';
+                this.startWaveBtn.classList.add('btn-disabled');
             } else {
                 this.startWaveBtn.disabled = false;
                 this.startWaveBtn.textContent = 'Begin Assault';
+                this.startWaveBtn.classList.remove('btn-disabled');
             }
         }
     }

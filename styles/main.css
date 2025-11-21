@@ -29,9 +29,19 @@ body {
         inset 0 0 100px rgba(0, 0, 0, 0.5);
     border: 3px solid #10b981;
     border-radius: 0;
-    overflow: visible;
+    overflow: hidden;
     background: #000;
     display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+/* Canvas wrapper */
+#game-container > div:first-child {
+    position: relative;
+    width: 800px;
+    height: 640px;
+    flex-shrink: 0;
 }
 
 /* CRT Screen Effect */
@@ -42,7 +52,6 @@ body {
     background: #0a0a0a;
     image-rendering: pixelated;
     filter: contrast(1.1) brightness(0.95);
-    flex-shrink: 0;
 }
 
 /* Scan lines overlay */
@@ -159,6 +168,7 @@ body {
     padding: 15px;
     color: #10b981;
     width: 250px;
+    height: 640px;
     flex-shrink: 0;
     box-shadow:
         0 0 30px rgba(16, 185, 129, 0.4),
@@ -314,6 +324,18 @@ body {
 
 .btn:active {
     transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+    background: rgba(16, 185, 129, 0.1);
+    border-color: #065f46;
+}
+
+.btn:disabled::before {
+    display: none;
 }
 
 .btn-primary {
@@ -599,8 +621,6 @@ body {
 /* Responsive Design */
 @media (max-width: 1024px) {
     #tower-panel {
-        right: 5px;
-        top: 110px;
         min-width: 200px;
         padding: 12px;
     }

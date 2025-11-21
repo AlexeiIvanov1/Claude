@@ -200,35 +200,324 @@ export class Renderer {
     }
 
     drawEnemy(enemy) {
-        // Enemy body
-        this.ctx.fillStyle = enemy.color;
-        this.ctx.strokeStyle = '#FFFFFF';
-        this.ctx.lineWidth = 1;
+        this.ctx.save();
 
-        if (enemy.flying) {
-            // Draw flying enemies as triangles
-            this.drawTriangle(enemy.position.x, enemy.position.y, enemy.size);
-        } else {
-            // Draw ground enemies as circles
-            this.ctx.beginPath();
-            this.ctx.arc(enemy.position.x, enemy.position.y, enemy.size, 0, Math.PI * 2);
-            this.ctx.fill();
-            this.ctx.stroke();
+        // Draw enemy based on type with Fallout theme
+        switch (enemy.type) {
+            case 'BASIC':
+                this.drawRaider(enemy);
+                break;
+            case 'FAST':
+                this.drawFeralGhoul(enemy);
+                break;
+            case 'TANK':
+                this.drawSuperMutant(enemy);
+                break;
+            case 'FLYING':
+                this.drawBloodbug(enemy);
+                break;
+            case 'BOSS':
+                this.drawDeathclaw(enemy);
+                break;
+            default:
+                this.drawGenericEnemy(enemy);
         }
 
         // Draw slow effect indicator
         if (enemy.isSlowed()) {
-            this.ctx.strokeStyle = '#9C27B0';
+            this.ctx.strokeStyle = '#06b6d4';
             this.ctx.lineWidth = 2;
+            this.ctx.setLineDash([3, 3]);
             this.ctx.beginPath();
-            this.ctx.arc(enemy.position.x, enemy.position.y, enemy.size + 3, 0, Math.PI * 2);
+            this.ctx.arc(enemy.position.x, enemy.position.y, enemy.size + 4, 0, Math.PI * 2);
             this.ctx.stroke();
+            this.ctx.setLineDash([]);
+
+            // Add frost particles
+            for (let i = 0; i < 3; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const dist = enemy.size + Math.random() * 5;
+                const px = enemy.position.x + Math.cos(angle) * dist;
+                const py = enemy.position.y + Math.sin(angle) * dist;
+                this.ctx.fillStyle = '#a5f3fc';
+                this.ctx.beginPath();
+                this.ctx.arc(px, py, 1, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
         }
 
         // Draw health bar
         if (this.showHealthBars && enemy.hp < enemy.maxHp) {
             this.drawHealthBar(enemy);
         }
+
+        this.ctx.restore();
+    }
+
+    drawRaider(enemy) {
+        const x = enemy.position.x;
+        const y = enemy.position.y;
+        const size = enemy.size;
+
+        // Body - brown/leather armor
+        this.ctx.fillStyle = '#92400e';
+        this.ctx.beginPath();
+        this.ctx.ellipse(x, y, size * 0.6, size * 0.9, 0, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#451a03';
+        this.ctx.lineWidth = 1;
+        this.ctx.stroke();
+
+        // Head
+        this.ctx.fillStyle = '#d97706';
+        this.ctx.beginPath();
+        this.ctx.arc(x, y - size * 0.7, size * 0.4, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.stroke();
+
+        // Mohawk
+        this.ctx.fillStyle = '#dc2626';
+        this.ctx.fillRect(x - size * 0.15, y - size * 1.1, size * 0.3, size * 0.5);
+
+        // Weapon silhouette
+        this.ctx.strokeStyle = '#57534e';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + size * 0.5, y);
+        this.ctx.lineTo(x + size * 1.2, y - size * 0.3);
+        this.ctx.stroke();
+    }
+
+    drawFeralGhoul(enemy) {
+        const x = enemy.position.x;
+        const y = enemy.position.y;
+        const size = enemy.size;
+        const wobble = Math.sin(Date.now() * 0.01) * 0.1;
+
+        // Hunched body - sickly green
+        this.ctx.fillStyle = '#84cc16';
+        this.ctx.beginPath();
+        this.ctx.ellipse(x, y, size * 0.7, size * 0.8, wobble, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#365314';
+        this.ctx.lineWidth = 1;
+        this.ctx.stroke();
+
+        // Decayed head
+        this.ctx.fillStyle = '#a3e635';
+        this.ctx.beginPath();
+        this.ctx.arc(x - size * 0.3, y - size * 0.5, size * 0.35, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.stroke();
+
+        // Glowing eyes
+        this.ctx.fillStyle = '#fbbf24';
+        this.ctx.shadowBlur = 5;
+        this.ctx.shadowColor = '#fbbf24';
+        this.ctx.beginPath();
+        this.ctx.arc(x - size * 0.4, y - size * 0.5, size * 0.1, 0, Math.PI * 2);
+        this.ctx.arc(x - size * 0.2, y - size * 0.5, size * 0.1, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.shadowBlur = 0;
+
+        // Radiation symbol
+        this.ctx.fillStyle = '#facc15';
+        this.ctx.font = `${size * 0.6}px Arial`;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText('☢', x, y + size * 0.3);
+    }
+
+    drawSuperMutant(enemy) {
+        const x = enemy.position.x;
+        const y = enemy.position.y;
+        const size = enemy.size;
+
+        // Large muscular body - olive green
+        this.ctx.fillStyle = '#65a30d';
+        this.ctx.beginPath();
+        this.ctx.ellipse(x, y, size * 0.9, size * 1.1, 0, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#3f6212';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+
+        // Armor plates
+        this.ctx.fillStyle = '#78716c';
+        this.ctx.fillRect(x - size * 0.5, y - size * 0.3, size * 1, size * 0.6);
+        this.ctx.strokeStyle = '#292524';
+        this.ctx.strokeRect(x - size * 0.5, y - size * 0.3, size * 1, size * 0.6);
+
+        // Large head
+        this.ctx.fillStyle = '#84cc16';
+        this.ctx.beginPath();
+        this.ctx.arc(x, y - size * 0.8, size * 0.5, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#3f6212';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+
+        // Angry eyes
+        this.ctx.fillStyle = '#dc2626';
+        this.ctx.fillRect(x - size * 0.3, y - size * 0.8, size * 0.2, size * 0.15);
+        this.ctx.fillRect(x + size * 0.1, y - size * 0.8, size * 0.2, size * 0.15);
+
+        // Weapon
+        this.ctx.fillStyle = '#292524';
+        this.ctx.fillRect(x + size * 0.7, y - size * 0.5, size * 0.4, size * 1.5);
+    }
+
+    drawBloodbug(enemy) {
+        const x = enemy.position.x;
+        const y = enemy.position.y;
+        const size = enemy.size;
+        const time = Date.now() * 0.01;
+        const wingFlap = Math.sin(time * 2) * 0.3;
+
+        // Body - red/brown insect
+        this.ctx.fillStyle = '#dc2626';
+        this.ctx.beginPath();
+        this.ctx.ellipse(x, y, size * 0.4, size * 0.8, 0, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#991b1b';
+        this.ctx.lineWidth = 1;
+        this.ctx.stroke();
+
+        // Head/Proboscis
+        this.ctx.fillStyle = '#7f1d1d';
+        this.ctx.beginPath();
+        this.ctx.arc(x, y - size * 0.6, size * 0.3, 0, Math.PI * 2);
+        this.ctx.fill();
+
+        // Stinger
+        this.ctx.strokeStyle = '#450a0a';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y - size * 0.8);
+        this.ctx.lineTo(x, y - size * 1.3);
+        this.ctx.stroke();
+
+        // Wings with flapping animation
+        this.ctx.fillStyle = 'rgba(220, 38, 38, 0.3)';
+        this.ctx.beginPath();
+        this.ctx.ellipse(x - size * 0.3, y, size * 0.8, size * 0.4, -0.5 + wingFlap, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#991b1b';
+        this.ctx.stroke();
+
+        this.ctx.beginPath();
+        this.ctx.ellipse(x + size * 0.3, y, size * 0.8, size * 0.4, 0.5 - wingFlap, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.stroke();
+
+        // Compound eyes
+        this.ctx.fillStyle = '#000000';
+        this.ctx.beginPath();
+        this.ctx.arc(x - size * 0.15, y - size * 0.65, size * 0.12, 0, Math.PI * 2);
+        this.ctx.arc(x + size * 0.15, y - size * 0.65, size * 0.12, 0, Math.PI * 2);
+        this.ctx.fill();
+    }
+
+    drawDeathclaw(enemy) {
+        const x = enemy.position.x;
+        const y = enemy.position.y;
+        const size = enemy.size;
+        const breathe = Math.sin(Date.now() * 0.003) * 0.05;
+
+        // Massive body - dark brown/tan
+        this.ctx.fillStyle = '#78350f';
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowColor = '#dc2626';
+        this.ctx.beginPath();
+        this.ctx.ellipse(x, y, size * (0.9 + breathe), size * 1.2, 0, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.shadowBlur = 0;
+        this.ctx.strokeStyle = '#451a03';
+        this.ctx.lineWidth = 3;
+        this.ctx.stroke();
+
+        // Muscular definition
+        this.ctx.strokeStyle = '#451a03';
+        this.ctx.lineWidth = 2;
+        for (let i = 0; i < 3; i++) {
+            this.ctx.beginPath();
+            this.ctx.arc(x, y - size * 0.4 + i * size * 0.4, size * 0.6, 0, Math.PI);
+            this.ctx.stroke();
+        }
+
+        // Head with horns
+        this.ctx.fillStyle = '#92400e';
+        this.ctx.beginPath();
+        this.ctx.arc(x, y - size * 1, size * 0.6, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#451a03';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+
+        // Horns
+        this.ctx.fillStyle = '#57534e';
+        this.ctx.beginPath();
+        this.ctx.moveTo(x - size * 0.5, y - size * 0.9);
+        this.ctx.lineTo(x - size * 0.9, y - size * 1.5);
+        this.ctx.lineTo(x - size * 0.4, y - size * 1.1);
+        this.ctx.closePath();
+        this.ctx.fill();
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + size * 0.5, y - size * 0.9);
+        this.ctx.lineTo(x + size * 0.9, y - size * 1.5);
+        this.ctx.lineTo(x + size * 0.4, y - size * 1.1);
+        this.ctx.closePath();
+        this.ctx.fill();
+
+        // Glowing red eyes
+        this.ctx.fillStyle = '#dc2626';
+        this.ctx.shadowBlur = 8;
+        this.ctx.shadowColor = '#dc2626';
+        this.ctx.beginPath();
+        this.ctx.arc(x - size * 0.25, y - size * 1, size * 0.15, 0, Math.PI * 2);
+        this.ctx.arc(x + size * 0.25, y - size * 1, size * 0.15, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.shadowBlur = 0;
+
+        // Massive claws
+        this.ctx.strokeStyle = '#292524';
+        this.ctx.lineWidth = 3;
+        this.ctx.lineCap = 'round';
+
+        // Left claw
+        for (let i = 0; i < 3; i++) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x - size * 0.8, y + size * 0.3);
+            this.ctx.lineTo(x - size * 1.3 + i * 0.2, y + size * 0.8);
+            this.ctx.stroke();
+        }
+
+        // Right claw
+        for (let i = 0; i < 3; i++) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(x + size * 0.8, y + size * 0.3);
+            this.ctx.lineTo(x + size * 1.3 - i * 0.2, y + size * 0.8);
+            this.ctx.stroke();
+        }
+
+        // Radiation warning symbol
+        this.ctx.fillStyle = '#facc15';
+        this.ctx.font = `bold ${size * 0.5}px Arial`;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText('☢', x, y + size * 0.5);
+    }
+
+    drawGenericEnemy(enemy) {
+        // Fallback for any undefined enemy types
+        this.ctx.fillStyle = enemy.color;
+        this.ctx.strokeStyle = '#FFFFFF';
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        this.ctx.arc(enemy.position.x, enemy.position.y, enemy.size, 0, Math.PI * 2);
+        this.ctx.fill();
+        this.ctx.stroke();
     }
 
     drawTriangle(x, y, size) {

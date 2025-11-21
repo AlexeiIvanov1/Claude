@@ -155,6 +155,7 @@ export class WaveManager {
 
         // Check if wave is complete
         if (this.spawnQueue.length === 0 && this.gameState.enemies.length === 0) {
+            console.log(`Wave ${this.currentWave} complete! Spawn queue: ${this.spawnQueue.length}, Enemies: ${this.gameState.enemies.length}`);
             this.completeWave();
         }
     }
@@ -169,8 +170,12 @@ export class WaveManager {
     }
 
     completeWave() {
-        if (!this.waveInProgress) return;
+        if (!this.waveInProgress) {
+            console.log('completeWave called but wave not in progress');
+            return;
+        }
 
+        console.log(`Completing wave ${this.currentWave}, setting waveInProgress to false`);
         this.waveInProgress = false;
 
         // Award money
@@ -181,6 +186,8 @@ export class WaveManager {
         // Notify game
         this.gameState.completeWave();
         audioSystem.playWaveComplete();
+
+        console.log(`Wave ${this.currentWave} completed successfully`);
     }
 
     getCurrentWave() {
